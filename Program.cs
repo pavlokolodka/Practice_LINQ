@@ -91,7 +91,7 @@ namespace Practice_Linq
         {
             //Query 3: Вивести всі домашні матчі збірної Франції за 2021 рік, де вона зіграла у нічию.
 
-            var selectedGames = games.Where(game => game.Home_team == "France" && game.Country == "France" && game.Date.Year == 2021 && game.Home_score == game.Away_score).ToList();   // Корегуємо запит !!!
+            var selectedGames = games.Where(game => game.Home_team == "France" && game.Country == "France" && game.Date.Year == 2021 && game.Home_score == game.Away_score).ToList(); 
 
             // Перевірка
             Console.WriteLine("\n======================== QUERY 3 ========================");
@@ -108,15 +108,21 @@ namespace Practice_Linq
         {
             //Query 4: Вивести всі матчі збірної Германії з 2018 року по 2020 рік (включно), в яких вона на виїзді програла.
 
-            var selectedGames = games;   // Корегуємо запит !!!
+            var selectedGames = from game in games
+                                where game.Date.Year >= 2018 && game.Date.Year <= 2020
+                                    && game.Away_team == "Germany" && game.Home_score > game.Away_score
+                                orderby game.Date
+                                select game;    
 
 
             // Перевірка
             Console.WriteLine("\n======================== QUERY 4 ========================");
 
-            // див. приклад як має бути виведено:
-
-
+            foreach (var match in selectedGames)
+            {
+                Console.WriteLine($"{match.Date:dd.MM.yyyy} {match.Home_team} - {match.Away_team}, " +
+                                  $"Score: {match.Home_score} - {match.Away_score}, Country: {match.Country}");
+            }
         }
 
         // Запит 5
