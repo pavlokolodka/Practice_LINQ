@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using System.Text.RegularExpressions;
 
 namespace Practice_Linq
 {
@@ -165,8 +166,6 @@ namespace Practice_Linq
                 Console.WriteLine($"{match.Date:dd.MM.yyyy} {match.Home_team} - {match.Away_team}, " +
                                   $"Score: {match.Home_score} - {match.Away_score}, Country: {match.Country}");
             }
-
-
         }
 
         // Запит 7
@@ -174,15 +173,21 @@ namespace Practice_Linq
         {
             //Query 7: Вивести перший матч у 2023 році, в якому збірна України виграла.
 
-            FootballGame g = null;   // Корегуємо запит !!!
+            FootballGame g = games
+                            .Where(g => (
+                                        (g.Home_team == "Ukraine" && g.Home_score > g.Away_score)
+                                        || (g.Away_team == "Ukraine" && g.Away_score > g.Home_score)
+                                        )
+                                        && g.Date.Year == 2023)
+                            //.OrderBy(g => g.Date)
+                            .FirstOrDefault();
 
 
             // Перевірка
             Console.WriteLine("\n======================== QUERY 7 ========================");
 
-            // див. приклад як має бути виведено:
-
-
+            Console.WriteLine($"{g.Date:dd.MM.yyyy} {g.Home_team} - {g.Away_team}, " +
+            $"Score: {g.Home_score} - {g.Away_score}, Country: {g.Country}");
         }
 
         // Запит 8
